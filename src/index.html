@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
+    <title>Stencil Component Starter</title>
+
+    <script type="module" src="/build/toggle-button.esm.js"></script>
+    <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
+    <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
+    <script nomodule src="/build/toggle-button.js"></script>
+  </head>
+  <body>
+    <!-- <tabulator-demo></tabulator-demo> -->
+    <!-- <custom-toggle-button is-on="true" ></custom-toggle-button> -->
+    <!-- <warning-icon></warning-icon> -->
+    <select name="param" id="params">
+      <option value="name">Name</option>
+      <option value="Age">Age</option>
+      <option value="Gender">Gender</option>
+      <option value="Fav Color">Color</option>
+    </select>
+    <select name="sort" id="order">
+      <option value="asc" selected>Asc</option>
+      <option value="desc">Desc</option>
+    </select>
+    <button id="get"> Get</button>
+    <div id="example" style="margin:30px"></div>
+    <button id="del">Delete row</button>
+    <button id="add">Add Row</button>
+    <button id="update">Update Row</button>
+    <div id="errData"></div>
+
+    <script>
+    tableData = [
+      {id:1, name:"Billy Bob", age:"12", gender:"male", height:1, col:"red", dob:"8/05/1982"},
+      {id:2, name:"Mary May", age:"1", gender:"female", height:2, col:"blue", dob:"14/05/1982"},
+      {id:3, name:"Christine Lobowski", age:"42",gender:"male", height:0, col:"green", dob:"22/05/1982"},
+      {id:4, name:"Brendon Philips", age:"12", gender:"male", height:1, col:"orange", dob:"01/08/1980"},
+      {id:5, name:"Margret Marmajuke", age:"16", gender:"female", height:5, col:"yellow", dob:"31/01/1999"},
+  ]
+  tableData.forEach(element => {
+    element['button']="";
+  });
+
+var ageEditor = function(cell, onRendered, success, cancel, editorParams){
+    var cellDiv=document.createElement("div");
+    cellDiv.id="cellDiv";
+    cellDiv.classList.add('cellDiv');
+    var editor = document.createElement("input");
+    editor.setAttribute("type", "number");
+    cellDiv.appendChild(editor);
+    //create and style input
+    editor.style.padding = "3px";
+    editor.style.width = "100%";
+    editor.style.height="100%";
+    editor.style.boxSizing = "border-box";
+
+    let warn = document.createElement("div");
+    warn.classList.add("warn");
+    warn.title="0<Age<100";
+    warn.style.display="none";
+    warn.style.textAlign="center";
+    let p = document.createElement("p");
+    p.textContent="i";
+    p.classList.add("text-style");
+    warn.appendChild(p)
+    cellDiv.appendChild(warn);
+    //Set value of editor to the current value of the cell
+    editor.value = cell.getValue();
+    //set focus on the select box when the editor is selected (timeout allows for editor to be added to DOM)
+    onRendered(function(){
+        editor.focus();
+        editor.style.css = "100%";
+    });
+    //when the value has been set, trigger the cell to update
+    function successFunc(){
+       if (parseInt(editor.value)>0 && (parseInt(editor.value))<100){
+        editor.style.width = "70%";
+        warn.style.display="none";
+        success(editor.value);
+       }
+       else{
+        warn.style.display="block";
+         success(cellDiv);
+       }
+    }
+
+    editor.addEventListener("change", successFunc);
+    editor.addEventListener("blur", successFunc);
+
+    //return the editor element
+    return cellDiv;
+};
+
+var buttonEditor = function(cell, onRendered, success, cancel, editorParams){
+      let editorButton = document.createElement('custom-toggle-button');
+    //editorButton.setAttribute("is-on","true");
+    //Set value of editor to the current value of the cell
+    //set focus on the select box when the editor is selected (timeout allows for editor to be added to DOM)
+    onRendered(function(){
+      editorButton.focus();
+      editorButton.style.css = "100%";
+    });
+    //when the value has been set, trigger the cell to update
+    function successFunc(event){
+        console.log(event);
+       success(editorButton)
+    }
+    editorButton.addEventListener("toggleEvent", successFunc);
+    editorButton.addEventListener("blur", successFunc);
+    //return the editor element
+    return editorButton;
+}
+  var table = new Tabulator("#example",{
+    resizableRows:true,
+    layout:"fitData",
+    data:tableData,
+    height:"100%",
+    layout:"fitData",
+  // groupBy:["gender","col"],
+    columns:[
+      {title:"Name",field:"name",maxWidth:100,validator:"unique",width:350,cellClick:function(e,cell){alert(`printing ${cell.getRow().getData().name}`)}},
+      {title:"Age",field:"age",editor:ageEditor, validator:["min:0","max:100"]},
+      {title:"Gender",field:"gender",editor:true,validator:["required","in:male|female"]},
+      {title:"Fav Color",field:"col",formatter:"color",hozAlign:"center",cellClick(e,cell){alert(`${cell.getRow().getData().col}`)}},
+      {title:"Date of Birth",field:"dob",sorter:"date",hozAlign:"center"},
+      {title:"Button",field:"button",hozAlign:"center",cellClick:function(toggleEvent,cell){console.log(toggleEvent)},formatter:function(){return `<custom-toggle-button is-on="true" ></custom-toggle-button>`}}
+    ]
+  })
+  let rep = document.querySelector('#del');
+  rep.addEventListener("click",function(event){
+    table.deleteRow(1).then(()=>{
+      console.log("deleted");
+    })
+  })
+
+  let rep1 = document.querySelector('#add');
+  rep1.addEventListener("click",function(event){
+    table.addRow({id:6, name:"Bhanu Kiran", age:"10", gender:"male", height:5.6, col:"skyBlue", dob:"31/01/1999"},true).then(()=>{
+      console.log("Added");
+    })
+  });
+
+  let rep2 = document.querySelector('#update');
+  rep2.addEventListener("click",function(event){
+    table.updateRow(2,{id:2, name:"Mary June", age:"10", gender:"female", height:2, col:"blue", dob:"14/05/1982", cheese:true},true).then(()=>{
+      console.log("UPdated");
+    })
+  });
+
+  let params = document.querySelector('#params');
+  let order = document.querySelector('#order');
+  let get = document.querySelector('#get');
+  get.addEventListener("click",function(){
+    table.setSort({column:params.value,dir:order.value});
+  });
+</script>
+<style>
+    .warn{
+      font-weight:bold;
+      color:white;
+      width:30%;
+      height: 100%;
+      background-color: red;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      box-sizing: border-box;
+      text-align: center;
+      
+    }
+    .text-style{
+      align-self: center;
+      font-weight: bolder;
+      font-size:10px;
+      font-weight: bold;
+    }
+    .cellDiv{
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      
+    }
+    .tabulator-row .tabulator-cell{
+      padding:10px 10px;
+      text-align: center;
+      align-self: center;
+  }
+</style>
+  </body>
+</html>

@@ -1,0 +1,48 @@
+{
+  "name": "cs-toggle-button",
+  "version": "0.0.2",
+  "description": "Stencil Component Starter",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.js",
+  "es2015": "dist/esm/index.mjs",
+  "es2017": "dist/esm/index.mjs",
+  "types": "dist/types/components.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
+  "collection:main": "dist/collection/index.js",
+  "unpkg": "dist/toggle-button/toggle-button.esm.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ionic-team/stencil-component-starter.git"
+  },
+  "files": [
+    "dist/",
+    "loader/"
+  ],
+  "scripts": {
+    "build": "stencil build --docs",
+    "start": "stencil build --dev --watch --serve",
+    "test": "stencil test --spec --e2e",
+    "test.watch": "stencil test --spec --e2e --watchAll",
+    "generate": "stencil generate",
+    "lint": "eslint src/**/*{.ts,.tsx}",
+    "lint-and-fix": "eslint src/**/*{.ts,.tsx} --fix"
+  },
+  "dependencies": {
+    "@stencil/core": "^2.13.0",
+    "tabulator-tables": "^5.1.7"
+  },
+  "devDependencies": {
+    "@stencil/eslint-plugin": "^0.4.0",
+    "@types/jest": "^27.0.3",
+    "@typescript-eslint/eslint-plugin": "^5.3.1",
+    "@typescript-eslint/parser": "^5.3.1",
+    "eslint": "^7.32.0",
+    "eslint-plugin-jsdoc": "^37.9.7",
+    "eslint-plugin-react": "^7.29.3",
+    "jest": "^27.4.5",
+    "jest-cli": "^27.4.5",
+    "puppeteer": "^10.0.0",
+    "typescript": "^4.6.2"
+  },
+  "license": "MIT"
+}
