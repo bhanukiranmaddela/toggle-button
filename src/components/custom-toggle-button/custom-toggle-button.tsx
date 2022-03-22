@@ -31,7 +31,6 @@ export class CustomToggleButton {
    console.log(this.internalIsOn);
     this.toggleEvent.emit(this.internalIsOn);
   }
-
   render() {
     return (
       <Host>
