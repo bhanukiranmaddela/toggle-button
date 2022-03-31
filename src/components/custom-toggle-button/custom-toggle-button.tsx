@@ -1,5 +1,5 @@
 
-import { Component, Host, h, Prop, Event,EventEmitter, State } from '@stencil/core';
+import { Component, Host, h, Prop, Event,EventEmitter, State, Listen } from '@stencil/core';
 @Component({
   tag: 'custom-toggle-button',
   styleUrl: 'custom-toggle-button.css',
@@ -25,8 +25,13 @@ export class CustomToggleButton {
     this.internalIsOn=this.isOn;
   }
 
-  private toggle(){
-    //this.internalIsOn=this.isOn;
+  @Listen('emitCountryValue', { target: 'window' })
+  onEmittingCountryValue(ev){
+    console.log(ev);
+  }
+
+  private toggle(evnt) :void{
+    this.onEmittingCountryValue(evnt);
     this.internalIsOn=!this.internalIsOn;
    console.log(this.internalIsOn);
     this.toggleEvent.emit(this.internalIsOn);

@@ -1,18 +1,18 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { TabulatorDemo } from '../tabulator-demo';
+import { CustomDropdown } from '../custom-dropdown';
 
-describe('tabulator-demo', () => {
+describe('custom-dropdown', () => {
   it('renders', async () => {
     const page = await newSpecPage({
-      components: [TabulatorDemo],
-      html: `<tabulator-demo></tabulator-demo>`,
+      components: [CustomDropdown],
+      html: `<custom-dropdown></custom-dropdown>`,
     });
     expect(page.root).toEqualHtml(`
-      <tabulator-demo>
+      <custom-dropdown>
         <mock:shadow-root>
           <slot></slot>
         </mock:shadow-root>
-      </tabulator-demo>
+      </custom-dropdown>
     `);
   });
 });
