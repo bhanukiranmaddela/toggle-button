@@ -6,29 +6,41 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
+    interface CustomDropdown {
+        /**
+          * array for country list
+         */
+        "countries": string[];
+        /**
+          * internalmodification of countryName
+         */
+        "countryInp": string;
+        /**
+          * it gets data from the tag
+         */
+        "countryName": string;
+    }
     interface CustomToggleButton {
         /**
           * isOn is is-on in custom-toggle-button
          */
         "isOn": boolean;
     }
-    interface TabulatorDemo {
-    }
     interface WarningIcon {
     }
 }
 declare global {
+    interface HTMLCustomDropdownElement extends Components.CustomDropdown, HTMLStencilElement {
+    }
+    var HTMLCustomDropdownElement: {
+        prototype: HTMLCustomDropdownElement;
+        new (): HTMLCustomDropdownElement;
+    };
     interface HTMLCustomToggleButtonElement extends Components.CustomToggleButton, HTMLStencilElement {
     }
     var HTMLCustomToggleButtonElement: {
         prototype: HTMLCustomToggleButtonElement;
         new (): HTMLCustomToggleButtonElement;
-    };
-    interface HTMLTabulatorDemoElement extends Components.TabulatorDemo, HTMLStencilElement {
-    }
-    var HTMLTabulatorDemoElement: {
-        prototype: HTMLTabulatorDemoElement;
-        new (): HTMLTabulatorDemoElement;
     };
     interface HTMLWarningIconElement extends Components.WarningIcon, HTMLStencilElement {
     }
@@ -37,12 +49,30 @@ declare global {
         new (): HTMLWarningIconElement;
     };
     interface HTMLElementTagNameMap {
+        "custom-dropdown": HTMLCustomDropdownElement;
         "custom-toggle-button": HTMLCustomToggleButtonElement;
-        "tabulator-demo": HTMLTabulatorDemoElement;
         "warning-icon": HTMLWarningIconElement;
     }
 }
 declare namespace LocalJSX {
+    interface CustomDropdown {
+        /**
+          * array for country list
+         */
+        "countries"?: string[];
+        /**
+          * internalmodification of countryName
+         */
+        "countryInp"?: string;
+        /**
+          * it gets data from the tag
+         */
+        "countryName"?: string;
+        /**
+          * Emits country value
+         */
+        "onEmitCountryValue"?: (event: CustomEvent<string>) => void;
+    }
     interface CustomToggleButton {
         /**
           * isOn is is-on in custom-toggle-button
@@ -53,13 +83,11 @@ declare namespace LocalJSX {
          */
         "onToggleEvent"?: (event: CustomEvent<boolean>) => void;
     }
-    interface TabulatorDemo {
-    }
     interface WarningIcon {
     }
     interface IntrinsicElements {
+        "custom-dropdown": CustomDropdown;
         "custom-toggle-button": CustomToggleButton;
-        "tabulator-demo": TabulatorDemo;
         "warning-icon": WarningIcon;
     }
 }
@@ -67,8 +95,8 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "custom-dropdown": LocalJSX.CustomDropdown & JSXBase.HTMLAttributes<HTMLCustomDropdownElement>;
             "custom-toggle-button": LocalJSX.CustomToggleButton & JSXBase.HTMLAttributes<HTMLCustomToggleButtonElement>;
-            "tabulator-demo": LocalJSX.TabulatorDemo & JSXBase.HTMLAttributes<HTMLTabulatorDemoElement>;
             "warning-icon": LocalJSX.WarningIcon & JSXBase.HTMLAttributes<HTMLWarningIconElement>;
         }
     }

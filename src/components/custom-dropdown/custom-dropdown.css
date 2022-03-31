@@ -1,0 +1,42 @@
+:host {
+  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.container{
+  width: 400px;
+  position: relative;
+
+}
+.auto-inp{
+  width: calc(100%-50px);
+  border-radius: 1px;
+  outline: none;
+}
+
+.auto-inp::placeholder{
+  color: Grey;
+  font-weight: bold;
+}
+.unhide{
+  display: block;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-height: 70px;
+  overflow-y: auto;
+}
+.unhide li{
+    display: block;
+    color: black;
+    padding: 2px;
+    width: calc(100%-10px);
+    font-weight: bold;
+    cursor: pointer;
+}
+.hide-ul{
+  display: none;
+  background-color: red;
+}
